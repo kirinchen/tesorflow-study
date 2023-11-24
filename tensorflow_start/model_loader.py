@@ -3,6 +3,8 @@ import tensorflow as tf
 
 from keras.engine.training_v1 import Model
 
+from misc_utils import ModelKey
+
 SAVE_PATH_PREFIX = "model/"
 
 
@@ -28,3 +30,7 @@ def load(file_key: str) -> Model:
     model: Model = tf.keras.models.model_from_json(json_string=model_json)
     model.load_weights(get_path(file_key, ModelExtension.H5))
     return model
+
+
+def load_by_key(key: ModelKey) -> Model:
+    return load(key.value)
