@@ -15,6 +15,8 @@ def _gen_func_float(x: List[float]) -> float:
     ans += x[0] * 2
     ans += x[1] * 3
     ans += x[2] * 5
+    if x[0] < 0.2:
+        ans = 100
     return ans
 
 
