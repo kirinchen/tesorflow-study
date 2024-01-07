@@ -1,3 +1,5 @@
+from random import random
+
 import tensorflow as tf
 from keras import Model
 
@@ -64,25 +66,18 @@ def setup_model(model: Model):
     model.compile(optimizer=optimizer, loss='mse', metrics=['mae', 'mse'])
 
 
-ann_model_creator = AnnModelCreator(y_val_func=misc_utils._gen_func_float, model_consumer=setup_model)
+def gen_mock_x_args(x_list: list, y_list: list) -> list:
+    cur_len = len(x_list)
+    mod_num = cur_len % 10
+    x1 = random()
+    x2 = x1 if mod_num == 0 else random()
+    x3 = random()
+    return [x1, x2, x3]
+
+
+ann_model_creator = AnnModelCreator(
+    y_val_func=misc_utils._gen_func_float,
+    model_consumer=setup_model,
+    gen_mock_x_args_func=gen_mock_x_args
+)
 ann_model_creator.save(misc_utils.ModelKey.CUSTOM_FLOAT)
-#
-# test_loss, test_accuracy = model.evaluate(X_test, y_test)
-#
-# print("Test accuracy: {}".format(test_accuracy))
-#
-# print('-----SAVE & Reload model')
-#
-# model_json = model.to_json()
-# with open("fashion_model.json", "w") as json_file:
-#     json_file.write(model_json)
-#
-# model.save_weights("fashion_model.h5")
-#
-# model_new: Model = tf.keras.models.model_from_json(json_string=model_json)
-# model_new.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['sparse_categorical_accuracy'])
-# model_new.summary()
-# model_new.load_weights('fashion_model.h5')
-# test_loss, test_accuracy = model_new.evaluate(X_test, y_test)
-#
-# print("Test accuracy: {}".format(test_accuracy))

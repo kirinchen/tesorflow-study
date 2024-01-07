@@ -1,5 +1,5 @@
 from random import random
-from typing import Callable
+from typing import Callable, List
 
 import numpy as np
 import tensorflow as tf
@@ -9,10 +9,18 @@ import model_loader
 from misc_utils import ModelKey
 
 
+def gen_mock_x_args(x_list: list, y_list: list) -> list:
+    return [random(), random(), random()]
+
+
 class AnnModelCreator:
 
-    def __init__(self, y_val_func: Callable[[list], any], model_consumer: Callable[[Model], any]):
-        print(y_val_func([0.2, 0.8, 0.7]))
+    def __init__(self,
+                 y_val_func: Callable[[list], any],
+                 model_consumer: Callable[[Model], any],
+                 gen_mock_x_args_func: Callable[[list, list], list] = gen_mock_x_args
+                 ):
+        self.gen_mock_x_args_func: Callable[[list, list], list] = gen_mock_x_args_func
         self.y_val_func: Callable[[list], any] = y_val_func
         self.model_consumer: Callable[[Model], any] = model_consumer
         self.X_train, self.y_train = self.gen_x_y(pow(10, 5))
@@ -35,7 +43,7 @@ class AnnModelCreator:
         x_list = []
         y_list = []
         while len(x_list) < count:
-            x = [random(), random(), random()]
+            x = self.gen_mock_x_args_func(x_list, y_list)
             x_list.append(x)
             y = self.y_val_func(x)
             y_list.append(y)
