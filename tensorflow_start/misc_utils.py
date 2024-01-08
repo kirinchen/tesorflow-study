@@ -24,3 +24,4 @@ class ModelKey(Enum):
     CUSTOM = 'CUSTOM'
     CUSTOM_FLOAT = 'CUSTOM_FLOAT'
     CUSTOM_SINE = 'CUSTOM_SINE'
+    RNN_SINE = 'RNN_SINE'

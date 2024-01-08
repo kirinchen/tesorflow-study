@@ -3,6 +3,7 @@ import math
 import numpy
 import tensorflow as tf
 import numpy as np
+from matplotlib import pyplot as plt
 
 
 def print_hi(name):
@@ -20,4 +21,12 @@ if __name__ == '__main__':
     time_points = np.linspace(0, 8 * np.pi, 8000)
     print(time_points)
 
+    x = np.arange(1, 11)
+    y = x * x
+
+    plt.title("Line graph")
+    plt.xlabel("X axis")
+    plt.ylabel("Y axis")
+    plt.plot(x, y, color ="red")
+    plt.show()
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
