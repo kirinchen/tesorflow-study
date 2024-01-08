@@ -19,7 +19,7 @@ def get_path(key: str, extension: ModelExtension) -> str:
 
 def save(file_key: str, model: Model):
     model_json = model.to_json()
-    with open(get_path(file_key, ModelExtension.JSON), "w") as json_file:
+    with open(get_path(file_key, ModelExtension.JSON), "w+") as json_file:
         json_file.write(model_json)
     model.save_weights(get_path(file_key, ModelExtension.H5))
 

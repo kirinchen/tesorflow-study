@@ -23,3 +23,4 @@ def _gen_func_float(x: List[float]) -> float:
 class ModelKey(Enum):
     CUSTOM = 'CUSTOM'
     CUSTOM_FLOAT = 'CUSTOM_FLOAT'
+    CUSTOM_SINE = 'CUSTOM_SINE'
