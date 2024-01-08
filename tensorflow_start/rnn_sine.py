@@ -1,4 +1,6 @@
 import numpy as np
+
+import tensorflow as tf
 from keras.layers import Dense
 from keras.layers import LSTM
 from keras.models import Sequential
@@ -26,7 +28,24 @@ def gen_X_y():
     return X, y
 
 
-if __name__ == '__main__':
+def fit_normal():
+    X, y = gen_X_y()
+    model = Sequential()
+    model.add(tf.keras.layers.Dense(units=X.shape[1], activation='relu', input_shape=(X.shape[1],)))
+    model.add(tf.keras.layers.Dropout(0.3))
+    model.add(tf.keras.layers.Dense(units=16, activation='relu'))
+    model.add(tf.keras.layers.Dropout(0.3))
+    model.add(tf.keras.layers.Dense(units=49, activation='softmax'))
+    model.add(tf.keras.layers.Dropout(0.3))
+    model.add(tf.keras.layers.Dense(units=7, activation='relu'))
+    model.add(tf.keras.layers.Dense(1))
+    optimizer = tf.keras.optimizers.RMSprop(0.001)
+    model.compile(optimizer=optimizer, loss='mse', metrics=['mae', 'mse'])
+    model.fit(X[:6000], y[:6000], epochs=200, batch_size=10, verbose=2, validation_split=0.3)
+    model_loader.save(ModelKey.ANN_NORMAL_SINE.value, model)
+
+
+def fit_rnn():
     X, y = gen_X_y()
     model = Sequential()
     model.add(LSTM(16, input_shape=(X.shape[1], X.shape[2])))
@@ -37,3 +56,8 @@ if __name__ == '__main__':
     model.fit(X[:6000], y[:6000], epochs=200, batch_size=10, verbose=2, validation_split=0.3)
 
     model_loader.save(ModelKey.RNN_SINE.value, model)
+
+
+if __name__ == '__main__':
+    # fit_rnn()
+    fit_normal()
