@@ -73,7 +73,7 @@ def gen_mock_x_args(x_list: list, y_list: list) -> list:
     mod_num = cur_len % 10
     x1 = random()
     x2 = random()
-    x3 = random()
+    x3 = randint(0, 1)
     return [x1, x2, x3]
 
 
@@ -81,7 +81,7 @@ def gen_func_float(x: list) -> float:
     ans = 0
     ans += x[0] * 2
     ans += x[1] * 3
-    ans = ans if x[2] > 0.5 else ans + 100
+    ans = ans if x[2] == 0 else ans + 100
 
     return ans
 
