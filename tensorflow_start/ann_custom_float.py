@@ -81,7 +81,7 @@ def gen_func_float(x: list) -> float:
     ans = 0
     ans += x[0] * 2
     ans += x[1] * 3
-    ans += x[2] * 5
+    ans = ans if x[2] > 0.5 else ans + 100
 
     return ans
 
@@ -92,7 +92,8 @@ if __name__ == '__main__':
         model_consumer=setup_model,
         gen_mock_x_args_func=gen_mock_x_args,
         train_count=99999,
-        test_count=11111
+        test_count=11111,
+        epochs=100
 
     )
     ann_model_creator.save(misc_utils.ModelKey.CUSTOM_FLOAT)

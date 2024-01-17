@@ -20,7 +20,8 @@ class AnnModelCreator:
                  model_consumer: Callable[[Model], any],
                  gen_mock_x_args_func: Callable[[list, list], list] = gen_mock_x_args,
                  train_count: int = pow(10, 6),
-                 test_count: int = pow(10, 4)
+                 test_count: int = pow(10, 4),
+                 epochs: int = 10
                  ):
         self.gen_mock_x_args_func: Callable[[list, list], list] = gen_mock_x_args_func
         self.y_val_func: Callable[[list], any] = y_val_func
@@ -30,7 +31,7 @@ class AnnModelCreator:
         model = tf.keras.models.Sequential()
         self.model_consumer(model)
         model.summary()
-        model.fit(self.X_train, self.y_train, epochs=10)
+        model.fit(self.X_train, self.y_train, epochs=epochs)
         self.evaluate_info = model.evaluate(self.X_test, self.y_test)
         print("evaluate_info>>>>>>>")
         print(self.evaluate_info)
