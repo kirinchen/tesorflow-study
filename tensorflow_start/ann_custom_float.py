@@ -1,4 +1,4 @@
-from random import random
+from random import random, randint
 
 import tensorflow as tf
 from keras import Model
@@ -57,10 +57,12 @@ def setup_model(model: Model):
     model.add(tf.keras.layers.Dense(units=3, activation='relu', input_shape=(3,)))
     model.add(tf.keras.layers.Dropout(0.3))
     model.add(tf.keras.layers.Dense(units=7, activation='relu'))
+    model.add(tf.keras.layers.Dense(units=28, activation='sigmoid'))
     model.add(tf.keras.layers.Dropout(0.3))
-    model.add(tf.keras.layers.Dense(units=5, activation='softmax'))
+    model.add(tf.keras.layers.Dense(units=32, activation='softmax'))
     model.add(tf.keras.layers.Dropout(0.3))
     model.add(tf.keras.layers.Dense(units=7, activation='relu'))
+    # model.add(tf.keras.layers.Dense(units=49, activation='linear'))
     model.add(tf.keras.layers.Dense(1))
     optimizer = tf.keras.optimizers.RMSprop(0.001)
     model.compile(optimizer=optimizer, loss='mse', metrics=['mae', 'mse'])
@@ -70,14 +72,27 @@ def gen_mock_x_args(x_list: list, y_list: list) -> list:
     cur_len = len(x_list)
     mod_num = cur_len % 10
     x1 = random()
-    x2 = x1 if mod_num == 0 else random()
+    x2 = random()
     x3 = random()
     return [x1, x2, x3]
 
 
-ann_model_creator = AnnModelCreator(
-    y_val_func=misc_utils._gen_func_float,
-    model_consumer=setup_model,
-    gen_mock_x_args_func=gen_mock_x_args
-)
-ann_model_creator.save(misc_utils.ModelKey.CUSTOM_FLOAT)
+def gen_func_float(x: list) -> float:
+    ans = 0
+    ans += x[0] * 2
+    ans += x[1] * 3
+    ans += x[2] * 5
+
+    return ans
+
+
+if __name__ == '__main__':
+    ann_model_creator = AnnModelCreator(
+        y_val_func=gen_func_float,
+        model_consumer=setup_model,
+        gen_mock_x_args_func=gen_mock_x_args,
+        train_count=99999,
+        test_count=11111
+
+    )
+    ann_model_creator.save(misc_utils.ModelKey.CUSTOM_FLOAT)

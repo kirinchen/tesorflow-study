@@ -18,13 +18,15 @@ class AnnModelCreator:
     def __init__(self,
                  y_val_func: Callable[[list], any],
                  model_consumer: Callable[[Model], any],
-                 gen_mock_x_args_func: Callable[[list, list], list] = gen_mock_x_args
+                 gen_mock_x_args_func: Callable[[list, list], list] = gen_mock_x_args,
+                 train_count: int = pow(10, 6),
+                 test_count: int = pow(10, 4)
                  ):
         self.gen_mock_x_args_func: Callable[[list, list], list] = gen_mock_x_args_func
         self.y_val_func: Callable[[list], any] = y_val_func
         self.model_consumer: Callable[[Model], any] = model_consumer
-        self.X_train, self.y_train = self.gen_x_y(pow(10, 6))
-        self.X_test, self.y_test = self.gen_x_y(pow(10, 4))
+        self.X_train, self.y_train = self.gen_x_y(train_count)
+        self.X_test, self.y_test = self.gen_x_y(test_count)
         model = tf.keras.models.Sequential()
         self.model_consumer(model)
         model.summary()
