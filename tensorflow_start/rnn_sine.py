@@ -21,9 +21,10 @@ def gen_X_y():
         seq_out = np.cos(time_points)[i]
         dataX.append([seq_in])
         dataY.append(seq_out)
-
-    X = np.reshape(dataX, (len(dataX), seq_length, 1))  # numpy as np
+    X = np.array(dataX)
+    # X = np.reshape(dataX, (len(dataX), seq_length, 1))  # numpy as np
     y = np.reshape(dataY, (len(dataY), 1))
+    # y = np.array(dataY)
     print(f'{X} {y}')
     return X, y
 
@@ -50,7 +51,7 @@ def fit_rnn():
     model = Sequential()
     model.add(LSTM(16, input_shape=(X.shape[1], X.shape[2])))
 
-    model.add(Dense(y.shape[1], activation='linear'))
+    model.add(Dense(1, activation='linear'))
     model.compile(loss='mean_squared_error', optimizer='adam')
 
     model.fit(X[:6000], y[:6000], epochs=200, batch_size=10, verbose=2, validation_split=0.3)
@@ -59,5 +60,5 @@ def fit_rnn():
 
 
 if __name__ == '__main__':
-    # fit_rnn()
-    fit_normal()
+    fit_rnn()
+    # fit_normal()
